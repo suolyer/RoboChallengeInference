@@ -13,7 +13,7 @@ from fastapi import APIRouter, FastAPI, Response, Query, Body
 from fastapi.responses import JSONResponse
 from loguru import logger
 
-from mock_server.mock_rc_robot import MockRCRobot
+from mock_rc_robot import MockRCRobot
 from mock_settings import *
 from utils import resize_with_pad_single
 
@@ -222,7 +222,7 @@ class RobotWorker(Thread):
                 elif action_duration['left_action'] is None and action_duration['right_action'] is not None:
                     self.current_position = np.array(action_duration['right_action'])
                 elif action_duration['left_action'] is not None and action_duration['right_action'] is not None:
-                    self.current_position = np.array(action_duration['left_action'] + action_duration['right_action'])
+                    self.current_position = np.concatenate((action_duration['left_action'],  action_duration['right_action']))
                     if last_pos.shape[0] == self.robot_alpha.dof_num + 1:
                         last_pos = np.concatenate([last_pos, last_pos], axis=0)
                 period = action_duration['duration']
