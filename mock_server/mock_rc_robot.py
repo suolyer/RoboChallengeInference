@@ -230,6 +230,18 @@ class MockRCRobotArx5(MockRCRobot):
         self.frame_right = next(self.right_images)
         self.frame_high = next(self.high_images)
 
+    def left_get_joint(self):
+        return self.joint + [self.gripper]
+
+    def right_get_joint(self):
+        return self.joint + [self.gripper]
+
+    def left_get_pose(self):
+        return self.pose + [self.gripper]
+
+    def right_get_pose(self):
+        return self.pose + [self.gripper]
+
     def get_imgs(self):
         return [
             (time.time(), self.frame_left, None, None),
@@ -270,6 +282,18 @@ class MockRCRobotUr5(MockRCRobot):
         self.pose = state['ee_positions']
         self.frame_left = next(self.left_images)
         self.frame_right = next(self.right_images)
+
+    def left_get_joint(self):
+        return self.joint + [self.gripper]
+
+    def right_get_joint(self):
+        return self.joint + [self.gripper]
+
+    def left_get_pose(self):
+        return self.pose + [self.gripper]
+
+    def right_get_pose(self):
+        return self.pose + [self.gripper]
 
     def get_imgs(self):
         return [
@@ -312,6 +336,18 @@ class MockRCRobotFranka(MockRCRobot):
         self.frame_left = next(self.left_images)
         self.frame_right = next(self.right_images)
         self.frame_high = next(self.high_images)
+
+    def left_get_joint(self):
+        return self.joint + [self.gripper]
+
+    def right_get_joint(self):
+        return self.joint + [self.gripper]
+
+    def left_get_pose(self):
+        return self.pose + [self.gripper]
+
+    def right_get_pose(self):
+        return self.pose + [self.gripper]
 
     def get_imgs(self):
         return [
