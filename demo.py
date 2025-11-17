@@ -66,9 +66,9 @@ def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--user_token', type=str, required=True, help='User token')
-    parser.add_argument('--job_collection_id', type=str, required=True, help='Job collection id')
+    parser.add_argument('--run_id', type=str, required=True, help='Run ID. Get it from the detail page of your submission')
     parser.add_argument('--checkpoint', type=str, required=True, help='Checkpoint path')
-    # you can add your own parameters here
+    # you can modify or add your own parameters
 
     args = parser.parse_args()
 

@@ -69,15 +69,13 @@ python3 test.py {your_args}
 
 - Log in to RoboChallenge Web
 - Submit an evaluation request
-- Record the returned task ID
-    - The task ID will be included in the response. Please keep it for future reference.
-    - Alternatively, you can find the task ID on the "My Submissions" page.
+- On the "My Submission" page, you can view your submissions. Click "Detail" to see more information about a submission.
+- The Run ID displayed on the details page will be required for the evaluation process.
 
 ### 5. Execute
 
 - Wait for a notification (on the website or via email) indicating that your task has been assigned.
-- When the task's start time arrives, as specified in the assignment notification, execute the modified code from the
-  previous steps.
+- Ensure the modified code from the previous steps is actively running during the assigned period.
 - After the task is completed, the program will exit normally. If you encounter any issues or exceptions, please feel
   free to contact us.
 
