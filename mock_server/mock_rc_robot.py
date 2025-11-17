@@ -219,6 +219,7 @@ class MockRCRobotArx5(MockRCRobot):
         self.frame_right = None
         self.frame_high = None
         self.filler_thread = Thread(target=self.filler, daemon=True)
+        self.fill()
 
     def fill(self):
         state = next(self.states)
@@ -228,6 +229,13 @@ class MockRCRobotArx5(MockRCRobot):
         self.frame_left = next(self.left_images)
         self.frame_right = next(self.right_images)
         self.frame_high = next(self.high_images)
+
+    def get_imgs(self):
+        return [
+            (time.time(), self.frame_left, None, None),
+            (time.time(), self.frame_right, None, None),
+            (time.time(), self.frame_high, None, None),
+        ]
 
 
 class MockRCRobotUr5(MockRCRobot):
@@ -252,6 +260,8 @@ class MockRCRobotUr5(MockRCRobot):
         self.frame_right = None
         self.frame_high = None
         self.filler_thread = Thread(target=self.filler, daemon=True)
+        self.fill()
+
 
     def fill(self):
         state = next(self.states)
@@ -260,6 +270,12 @@ class MockRCRobotUr5(MockRCRobot):
         self.pose = state['ee_positions']
         self.frame_left = next(self.left_images)
         self.frame_right = next(self.right_images)
+
+    def get_imgs(self):
+        return [
+            (time.time(), self.frame_left, None, None),
+            (time.time(), self.frame_right, None, None),
+        ]
 
 
 class MockRCRobotFranka(MockRCRobot):
@@ -285,6 +301,8 @@ class MockRCRobotFranka(MockRCRobot):
         self.frame_right = None
         self.frame_high = None
         self.filler_thread = Thread(target=self.filler, daemon=True)
+        self.fill()
+
 
     def fill(self):
         state = next(self.states)
@@ -294,6 +312,13 @@ class MockRCRobotFranka(MockRCRobot):
         self.frame_left = next(self.left_images)
         self.frame_right = next(self.right_images)
         self.frame_high = next(self.high_images)
+
+    def get_imgs(self):
+        return [
+            (time.time(), self.frame_left, None, None),
+            (time.time(), self.frame_right, None, None),
+            (time.time(), self.frame_high, None, None),
+        ]
 
 
 if __name__ == '__main__':
