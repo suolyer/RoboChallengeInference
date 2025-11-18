@@ -108,7 +108,10 @@ class FlaskWorker(Thread):
                 arm_state = "abnormal"
         else:
             if self.robot_alpha.left_get_enable() and self.robot_alpha.right_get_enable():
-                action = self.robot_alpha.left_get_joint() + self.robot_alpha.right_get_joint()
+                if 'pos' in action_type:
+                    action = self.robot_alpha.left_get_pose() + self.robot_alpha.right_get_pose()
+                else:
+                    action = self.robot_alpha.left_get_joint()+self.robot_alpha.right_get_joint()
                 arm_state = "normal"
             else:
                 print('196: self.robot_alpha.left_get_enable() and self.robot_alpha.right_get_enable() are both False')
