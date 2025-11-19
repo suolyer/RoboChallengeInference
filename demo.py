@@ -83,7 +83,7 @@ def main():
     gpu_client = GPUClient(policy)  # add your own parameters
 
     # main job loop. This function monitors when jobs are ready to eval and do the evaluation
-    job_loop(client, gpu_client, args.job_collection_id, image_size, image_type, action_type, duration)
+    job_loop(client, gpu_client, args.run_id, image_size, image_type, action_type, duration)
 
 
 if __name__ == '__main__':
