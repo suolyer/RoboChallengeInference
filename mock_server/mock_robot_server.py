@@ -111,7 +111,7 @@ class FlaskWorker(Thread):
                 if 'pos' in action_type:
                     action = self.robot_alpha.left_get_pose() + self.robot_alpha.right_get_pose()
                 else:
-                    action = self.robot_alpha.left_get_joint()+self.robot_alpha.right_get_joint()
+                    action = self.robot_alpha.left_get_joint() + self.robot_alpha.right_get_joint()
                 arm_state = "normal"
             else:
                 print('196: self.robot_alpha.left_get_enable() and self.robot_alpha.right_get_enable() are both False')
@@ -161,13 +161,15 @@ class FlaskWorker(Thread):
                     else:
                         if 'pos' in action_type:
                             if len(action) == (self.robot_alpha.pos_num + 1) * 2:
-                                cmd_Q.put({'left_action': np.array(action[:7], dtype=np.float32), 'right_action': np.array(action[7:], dtype=np.float32), 'duration': duration, 'action_type': action_type})
+                                cmd_Q.put(
+                                    {'left_action': np.array(action[:self.robot_alpha.pos_num + 1], dtype=np.float32), 'right_action': np.array(action[self.robot_alpha.pos_num + 1:], dtype=np.float32), 'duration': duration, 'action_type': action_type})
                             else:
                                 self.dashboard_instance.format_error()
                                 return {'result': "error", 'message': 'The number and type of actions do not match!'}
                         else:
                             if len(action) == (self.robot_alpha.dof_num + 1) * 2:
-                                cmd_Q.put({'left_action': np.array(action[:7], dtype=np.float32), 'right_action': np.array(action[7:], dtype=np.float32), 'duration': duration, 'action_type': action_type})
+                                cmd_Q.put(
+                                    {'left_action': np.array(action[:self.robot_alpha.dof_num + 1], dtype=np.float32), 'right_action': np.array(action[self.robot_alpha.dof_num + 1:], dtype=np.float32), 'duration': duration, 'action_type': action_type})
                             else:
                                 self.dashboard_instance.format_error()
                                 return {'result': "error", 'message': 'The number and type of actions do not match!'}
@@ -225,9 +227,9 @@ class RobotWorker(Thread):
                 elif action_duration['left_action'] is None and action_duration['right_action'] is not None:
                     self.current_position = np.array(action_duration['right_action'])
                 elif action_duration['left_action'] is not None and action_duration['right_action'] is not None:
-                    self.current_position = np.concatenate((action_duration['left_action'],  action_duration['right_action']))
-                    if last_pos.shape[0] == self.robot_alpha.dof_num + 1:
-                        last_pos = np.concatenate([last_pos, last_pos], axis=0)
+                    self.current_position = np.concatenate((action_duration['left_action'], action_duration['right_action']))
+                if last_pos.shape!= self.current_position.shape:
+                    last_pos=self.current_position.copy()
                 period = action_duration['duration']
                 velocity = (self.current_position - last_pos) / period
                 if np.abs(velocity).max() > self.velocity_thre:

@@ -138,7 +138,7 @@ class MockRCRobotAloha(MockRCRobot):
 
     @property
     def pos_num(self):
-        return 16
+        return 7
 
     def __init__(self, robot_tag: RobotTag | str, realsense_ids, record_data_dir):
         super().__init__(robot_tag, realsense_ids, record_data_dir)
@@ -167,8 +167,8 @@ class MockRCRobotAloha(MockRCRobot):
         self.right_joint = right_state['joint_positions']
         self.left_gripper = left_state['gripper']
         self.right_gripper = right_state['gripper']
-        self.left_pose = left_state['ee_pose_rpy']
-        self.right_pose = right_state['ee_pose_rpy']
+        self.left_pose = left_state['ee_pose_quaternion']
+        self.right_pose = right_state['ee_pose_quaternion']
         self.frame_left = next(self.left_images)
         self.frame_right = next(self.right_images)
         self.frame_high = next(self.high_images)
@@ -257,7 +257,7 @@ class MockRCRobotUr5(MockRCRobot):
 
     @property
     def pos_num(self):
-        return 6
+        return 7
 
     def __init__(self, robot_tag: RobotTag | str, realsense_ids, record_data_dir):
         super().__init__(robot_tag, realsense_ids, record_data_dir)
