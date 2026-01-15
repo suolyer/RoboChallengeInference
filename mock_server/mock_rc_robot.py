@@ -10,7 +10,7 @@ import cv2
 import numpy as np
 
 ANGLE2RAD = np.pi / 180.0
-
+frame_interval = 1
 
 class RobotTag(Enum):
     ALOHA = 'aloha'
@@ -52,18 +52,28 @@ class MockRCRobot(ABC):
     def iter_jsonl(file_path):
         while True:
             with open(file_path, 'r') as f:
-                for line in f:
-                    yield json.loads(line)
+                for idx, line in enumerate(f):
+                    if idx % frame_interval == 0:
+                        print(f'yield frame {idx}')
+                        yield json.loads(line)
+                    else:
+                        print(f'skip frame {idx}')
 
     @staticmethod
     def iter_mp4(file_path):
+        idx = 0
         while True:
             cap = cv2.VideoCapture(file_path)
             while True:
                 ret, frame = cap.read()
                 if not ret:
                     break
-                yield frame
+                if idx % frame_interval == 0:
+                    print(f'yield frame {idx}')
+                    yield frame
+                else:
+                    print(f'skip frame {idx}')
+                idx += 1
             cap.release()
 
     @abstractmethod
@@ -158,7 +168,6 @@ class MockRCRobotAloha(MockRCRobot):
         self.frame_right = None
         self.frame_high = None
         self.filler_thread = Thread(target=self.filler, daemon=True)
-        self.fill()
 
     def fill(self):
         left_state = next(self.left_arm_states)
@@ -219,7 +228,6 @@ class MockRCRobotArx5(MockRCRobot):
         self.frame_right = None
         self.frame_high = None
         self.filler_thread = Thread(target=self.filler, daemon=True)
-        self.fill()
 
     def fill(self):
         state = next(self.states)
@@ -272,7 +280,6 @@ class MockRCRobotUr5(MockRCRobot):
         self.frame_right = None
         self.frame_high = None
         self.filler_thread = Thread(target=self.filler, daemon=True)
-        self.fill()
 
 
     def fill(self):
@@ -325,7 +332,6 @@ class MockRCRobotFranka(MockRCRobot):
         self.frame_right = None
         self.frame_high = None
         self.filler_thread = Thread(target=self.filler, daemon=True)
-        self.fill()
 
 
     def fill(self):

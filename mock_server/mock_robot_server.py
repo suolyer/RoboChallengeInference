@@ -44,7 +44,8 @@ class FlaskWorker(Thread):
     def __init__(self, server_port, robot_alpha: MockRCRobot, dashboard_instance: 'RobotDashboard'):
         super().__init__()
         self.server_port = server_port
-        self.image_size = (224, 224)  # (w,h)
+        # self.image_size = (224, 224)  # (w,h)
+        self.image_size = (640, 480)  # (w,h)
         # image_type['left_hand','right_hand','high']
         self.action_type = None  # 'pos','joint','leftpos','rightpos','leftjoint','rightjoint'
         self.robot_alpha = robot_alpha
@@ -63,6 +64,7 @@ class FlaskWorker(Thread):
         return {'timestamp': t2}
 
     def get_state(self, width: int = 224, height: int = 224, image_type: List[str] = Query(default=None), action_type: str = None, resize_name: str = None):
+        self.robot_alpha.fill()
         self.action_type = action_type
         image_size = (width, height)
         if image_size is None or action_type is None:
@@ -130,6 +132,9 @@ class FlaskWorker(Thread):
         try:
             actions = data.get("actions", [])
             duration = data.get("duration", [])
+            print(f"len(actions[0]): {len(actions[0])}")
+            print(f"self.robot_alpha.pos_num: {self.robot_alpha.pos_num}")
+            print(f"self.robot_alpha.dof_num: {self.robot_alpha.dof_num}")
             for action in actions:
                 if not cmd_Q.full():
                     if 'left' in action_type:
@@ -181,7 +186,7 @@ class FlaskWorker(Thread):
             return JSONResponse({"result": "error", "message": str(e)}, status_code=400)
 
     def run(self):
-        uvicorn.run(self.app, host="0.0.0.0", port=self.server_port, access_log=False)
+        uvicorn.run(self.app, host="127.0.0.1", port=self.server_port, access_log=False)
 
 
 class RobotWorker(Thread):
